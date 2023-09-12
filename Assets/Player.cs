@@ -5,23 +5,24 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float MoveSpeed = 10.0f;
+    public float TurnSpeed = 10.0f;
 
-    void Update()
+    Rigidbody2D rb;
+    
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void FixedUpdate()
     {
         float xDir = Input.GetAxis("Horizontal");
         float yDir = Input.GetAxis("Vertical");
 
-        transform.position += new Vector3(
-            -xDir * MoveSpeed * Time.deltaTime, 
-            yDir * MoveSpeed * Time.deltaTime,
-            0.0f
-            );
+        Vector3 pointingDir = transform.up;
         
-        //Vector3 newPos = transform.position;
+        rb.AddForce(pointingDir * MoveSpeed * yDir);
         
-        //newPos.x += xDir * MoveSpeed * Time.deltaTime;
-        //newPos.y += yDir * MoveSpeed * Time.deltaTime;
-
-        //transform.position = newPos;
+        rb.AddTorque(TurnSpeed * -xDir);
     }
 }
